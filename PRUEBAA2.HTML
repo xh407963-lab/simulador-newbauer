@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neubauer Pro - Creado por Anselmo Palacios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-space: #07090e;
+      --panel-bg: rgba(17, 24, 39, 0.75);
+      --card-bg: rgba(13, 18, 30, 0.85);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(56, 189, 248, 0.4);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.25);
+      --btc-orange: #f7931a;
+      --btc-glow: rgba(247, 147, 26, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 50%, #0d131f 0%, var(--bg-space) 100%);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* BARRA LATERAL */
+    #sidebar {
+      width: 390px;
+      background: var(--panel-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border-color);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 20;
+      box-shadow: 20px 0 50px rgba(0, 0, 0, 0.7);
+      overflow-y: auto;
+    }
+
+    #sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    #sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    /* HEADER */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #000;
+      padding: 3px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* TARJETAS */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .card-title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ctrl-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ctrl-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .ctrl-val {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 5px;
+      border-radius: 4px;
+      background: #1e293b;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-glow);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 15px var(--accent);
+    }
+
+    .objective-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .btn-obj {
+      background: #131c2e;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 9px 3px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .btn-obj span {
+      font-size: 0.58rem;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    .btn-obj:hover {
+      background: #1c2842;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-obj.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(56, 189, 248, 0.05));
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .btn-obj.active span {
+      color: var(--accent);
+    }
+
+    .btn-action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-action {
+      background: #131c2e;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      background: #1d2b47;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-action.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    /* INTERRUPTOR TOGGLE */
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+
+    .switch-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .switch-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .switch-subtitle {
+      font-size: 0.68rem;
+      color: var(--text-sub);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 22px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #1e293b;
+      transition: .3s;
+      border-radius: 22px;
+      border: 1px solid var(--border-color);
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #94a3b8;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background-color: var(--success);
+      border-color: var(--success);
+      box-shadow: 0 0 10px var(--success-glow);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+      background-color: #051d14;
+    }
+
+    /* SECCIÓN CONTADOR Y SELECTOR INTERACTIVO */
+    .counter-display {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 8px;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+    }
+
+    .counter-digits {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--success);
+      text-shadow: 0 0 15px var(--success-glow);
+    }
+
+    .mode-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #090e18;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-mode {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 6px 4px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .btn-mode span {
+      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-sub);
+    }
+
+    .btn-mode.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .btn-mode.active span {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* CREDITS & DONATIONS */
+    .credits-container {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .credits-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(13, 18, 30, 0.9) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .credits-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .credits-label {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-sub);
+    }
+
+    .credits-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+
+    .credits-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+    }
+
+    /* TARJETA DE DONACIONES BITCOIN */
+    .donation-card {
+      background: linear-gradient(135deg, rgba(247, 147, 26, 0.08) 0%, rgba(13, 18, 30, 0.95) 100%);
+      border: 1px solid rgba(247, 147, 26, 0.25);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .donation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .donation-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--btc-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btc-address-wrapper {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .btc-address-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: #cbd5e1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      user-select: text;
+    }
+
+    .donation-actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+    }
+
+    .btn-btc {
+      background: rgba(247, 147, 26, 0.15);
+      border: 1px solid rgba(247, 147, 26, 0.35);
+      color: var(--btc-orange);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-btc:hover {
+      background: rgba(247, 147, 26, 0.25);
+      border-color: var(--btc-orange);
+      box-shadow: 0 0 10px var(--btc-glow);
+    }
+
+    /* ÁREA DE TRABAJO */
+    #workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .top-telemetry {
+      height: 48px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(10, 14, 23, 0.6);
+      backdrop-filter: blur(10px);
+      font-size: 0.78rem;
+      z-index: 10;
+    }
+
+    .telemetry-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .telemetry-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .telemetry-item strong {
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .telemetry-author {
+      color: var(--text-sub);
+      font-size: 0.74rem;
+      border-left: 1px solid var(--border-color);
+      padding-left: 16px;
+    }
+
+    .telemetry-author span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* VISOR OCULAR */
+    #stage-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: radial-gradient(circle, #0b111e 0%, #030407 100%);
+    }
+
+    #eyepiece-housing {
+      width: 630px;
+      height: 630px;
+      border-radius: 50%;
+      position: relative;
+      cursor: grab;
+      box-shadow: 
+        0 0 0 14px #1a2233,
+        0 0 0 18px #0f1523,
+        0 0 0 38px #080c14,
+        0 0 0 42px #1f2a40,
+        0 0 0 2000px #020306,
+        0 20px 60px rgba(0, 0, 0, 0.9),
+        inset 0 0 70px rgba(0,0,0,0.85);
+      background: #bfd6af;
+      overflow: hidden;
+    }
+
+    #eyepiece-housing:active {
+      cursor: grabbing;
+    }
+
+    .lens-engraving-top {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #4b5563;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .lens-engraving-bottom {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #64748b;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 15;
+      text-shadow: 0 -1px 1px rgba(0,0,0,0.8);
+    }
+
+    .lens-engraving-bottom span {
+      color: var(--accent);
+    }
+
+    #lens-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 5;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.3) 75%, rgba(0,0,0,0.7) 100%);
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    /* MINI MAPA */
+    #stage-minimap {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 120px;
+      height: 120px;
+      background: rgba(13, 18, 30, 0.85);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .minimap-title {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      letter-spacing: 0.05em;
+    }
+
+    #minimap-canvas {
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      background: #090e18;
+    }
+  </style>
+</head>
+<body>
+
+  <aside id="sidebar">
+    <div class="brand-header">
+      <div class="brand-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+        Neubauer Pro
+        <span class="brand-badge">Lab OS</span>
+      </div>
+      <div class="status-dot" title="Sistema Calibrado"></div>
+    </div>
+
+    <!-- REVÓLVER -->
+    <div class="card">
+      <div class="card-title">Revólver Portaobjetivos</div>
+      <div class="objective-grid">
+        <button class="btn-obj" id="btn4x" onclick="setMagnification(4)">4x <span>0.10 AN</span></button>
+        <button class="btn-obj active" id="btn10x" onclick="setMagnification(10)">10x <span>0.25 AN</span></button>
+        <button class="btn-obj" id="btn40x" onclick="setMagnification(40)">40x <span>0.65 AN</span></button>
+        <button class="btn-obj" id="btn100x" onclick="setMagnification(100)">100x <span>Oil 1.25</span></button>
+      </div>
+    </div>
+
+    <!-- FOCO Y LUZ -->
+    <div class="card">
+      <div class="card-title">Ajustes Ópticos</div>
+      
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span>Micrométrico (Foco Z)</span>
+          <span class="ctrl-val" id="lbl-focus">0.00 µm</span>
+        </div>
+        <input type="range" id="focus" min="-5" max="5" value="0" step="0.05" oninput="updateControls()">
+      </div>
+
+      <div class="ctrl-row">
+        <div class="ctrl-label">
+          <span>Lámpara Halógena</span>
+          <span class="ctrl-val" id="lbl-light">100%</span>
+        </div>
+        <input type="range" id="light" min="40" max="150" value="100" oninput="updateControls()">
+      </div>
+    </div>
+
+    <!-- CONTROL DE MUESTRA -->
+    <div class="card">
+      <div class="card-title">Muestra Biológica</div>
+      <div class="switch-row">
+        <div class="switch-label">
+          <span class="switch-title">Células Sanguíneas</span>
+          <span class="switch-subtitle" id="lbl-cells-status">Visibles en campo (Tecla C)</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleCells" checked onchange="toggleCellsVisibility()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- PLATINA -->
+    <div class="card">
+      <div class="card-title">Platina & Malla</div>
+      <div class="btn-action-grid">
+        <button class="btn-action active" id="btnLabels" onclick="toggleLabels()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+          <span id="lbl-btn-text">Rótulos: SÍ</span>
+        </button>
+        <button class="btn-action" onclick="centerStage()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg>
+          Centrar
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTADOR DE LEUCOCITOS INTERACTIVO -->
+    <div class="card" style="border-color: rgba(16, 185, 129, 0.35);">
+      <div class="card-title" style="color: var(--success);">Contador de Leucocitos</div>
+      
+      <div class="counter-display">
+        <div>
+          <div style="font-size: 0.68rem; color: var(--text-sub); text-transform: uppercase;">Total Contado</div>
+          <div class="counter-digits" id="cellCounter">0</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <button class="btn-action" onclick="addCount(1)" style="padding: 6px 14px; background: var(--success); color: #000; font-weight: 700; border: none;">+1 (Espacio)</button>
+          <button class="btn-action" onclick="resetCount()" style="padding: 4px 10px; font-size: 0.72rem;">Reiniciar</button>
+        </div>
+      </div>
+
+      <!-- SELECTOR INTERACTIVO DE CUADRANTES -->
+      <div class="mode-selector">
+        <button class="btn-mode active" id="mode4Q" onclick="setCountMode(4)">
+          4 Cuadrantes (L1-L4)
+          <span>Multiplicar × 50</span>
+        </button>
+        <button class="btn-mode" id="mode2Q" onclick="setCountMode(2)">
+          2 Opuestos (L1+L4)
+          <span>Multiplicar × 100</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CRÉDITOS Y DONACIONES -->
+    <div class="credits-container">
+      <div class="credits-card">
+        <div class="credits-text">
+          <span class="credits-label">Desarrollo & Simulación</span>
+          <span class="credits-name">Creado por Anselmo Palacios</span>
+        </div>
+        <div class="credits-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+      </div>
+
+      <!-- APARTADO DE DONACIONES BITCOIN -->
+      <div class="donation-card">
+        <div class="donation-header">
+          <span class="donation-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.05m5.908 1.039l-.348 1.977M5.86 18.05l1.043-5.922m-1.043 5.922L4.01 17.72m7.757-5.525c3.838.677 4.887-4.698 1.049-5.375m-1.049 5.375L6.903 12.13m4.857.07l.348-1.977M6.903 12.13L7.946 6.21m-1.043 5.92l-1.85-.326M10.84 5.215l.348-1.977M7.946 6.21L6.096 5.884"/>
+            </svg>
+            Donaciones (Bitcoin)
+          </span>
+          <span style="font-size: 0.6rem; color: var(--text-sub); text-transform: uppercase;">BTC</span>
+        </div>
+
+        <div class="btc-address-wrapper" title="bc1p749779epspzf5mfgdgg0r2lunawqrse6d0ps74nywylqfuqdsdnqe768rt">
+          <span class="btc-address-text" id="btcAddressText">bc1p749779epspzf5mfgdgg0r2lunawqrse6d0ps74nywylqfuqdsdnqe768rt</span>
+        </div>
+
+        <div class="donation-actions">
+          <button class="btn-btc" id="btnCopyBtc" onclick="copyBtcAddress()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copyBtnText">Copiar Dirección</span>
+          </button>
+          <a class="btn-btc" href="bitcoin:bc1p749779epspzf5mfgdgg0r2lunawqrse6d0ps74nywylqfuqdsdnqe768rt" title="Abrir billetera Bitcoin">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            Wallet
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main id="workspace">
+    <header class="top-telemetry">
+      <div class="telemetry-group">
+        <div class="telemetry-item">Objetivo: <strong id="telem-mag">10x</strong></div>
+        <div class="telemetry-item">Aumento Total: <strong id="telem-total">100x</strong></div>
+        <div class="telemetry-item">Apertura Numérica: <strong id="telem-na">0.25</strong></div>
+      </div>
+      <div class="telemetry-group">
+        <div class="telemetry-item">Reactivo: <strong>Ácido acético glacial 3%</strong></div>
+        <div class="telemetry-item">Profundidad: <strong>0.100 mm</strong></div>
+        <div class="telemetry-author">Simulador: <span>Creado por Anselmo Palacios</span></div>
+      </div>
+    </header>
+
+    <div id="stage-container">
+      <div class="lens-engraving-top">HEMOCYTOMETER • OPTICAL SYSTEM</div>
+      
+      <div id="eyepiece-housing">
+        <canvas id="scopeCanvas" width="630" height="630"></canvas>
+        <div id="lens-glare"></div>
+      </div>
+
+      <div class="lens-engraving-bottom">SISTEMA DE PRECISIÓN • <span>CREADO POR ANSELMO PALACIOS</span></div>
+
+      <div id="stage-minimap">
+        <span class="minimap-title">Platina (X/Y)</span>
+        <canvas id="minimap-canvas" width="80" height="80"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 600, duration = 0.04) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    const canvas = document.getElementById('scopeCanvas');
+    const ctx = canvas.getContext('2d');
+    const miniCanvas = document.getElementById('minimap-canvas');
+    const miniCtx = miniCanvas.getContext('2d');
+
+    let mag = 10;
+    let posX = 0;
+    let posY = 0;
+    let focusZ = 0;
+    let lampPower = 100;
+    let showLabels = true;
+    let showCells = true;
+    let count = 0;
+    let countMode = 4;
+
+    const MAG_DATA = {
+      4: { scale: 0.35, na: '0.10', total: '40x' },
+      10: { scale: 0.95, na: '0.25', total: '100x' },
+      40: { scale: 3.2, na: '0.65', total: '400x' },
+      100: { scale: 7.5, na: '1.25 Oil', total: '1000x' }
+    };
+
+    const leucocytes = [];
+    const NUM_WBC = 135;
+
+    for (let i = 0; i < NUM_WBC; i++) {
+      const isSegmented = Math.random() > 0.28;
+      leucocytes.push({
+        x: (Math.random() - 0.5) * 1180,
+        y: (Math.random() - 0.5) * 1180,
+        z: (Math.random() - 0.5) * 3.5,
+        r: 6.2 + Math.random() * 1.6,
+        isSegmented: isSegmented,
+        angle: Math.random() * Math.PI * 2,
+        lobes: isSegmented ? [
+          { x: -2.0, y: -1.2, r: 1.8 },
+          { x: 1.8, y: -1.0, r: 1.6 },
+          { x: 0.2, y: 1.8, r: 1.7 }
+        ] : [
+          { x: 0, y: 0, r: 2.8 }
+        ]
+      });
+    }
+
+    const debris = [];
+    for (let i = 0; i < 280; i++) {
+      debris.push({
+        x: (Math.random() - 0.5) * 1250,
+        y: (Math.random() - 0.5) * 1250,
+        r: 0.6 + Math.random() * 1.2,
+        alpha: 0.2 + Math.random() * 0.35
+      });
+    }
+
+    function drawNeubauerChamber(scale) {
+      ctx.save();
+      const L = 160 * scale; 
+      const totalW = 3 * L;
+      const halfTotal = totalW / 2;
+      const halfL = L / 2;
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.lineWidth = Math.max(0.6, 0.85 * Math.sqrt(scale));
+      ctx.shadowColor = "rgba(255, 255, 255, 0.35)";
+      ctx.shadowBlur = 1.0;
+
+      ctx.beginPath();
+      ctx.strokeRect(-halfTotal, -halfTotal, totalW, totalW);
+
+      ctx.moveTo(-halfL, -halfTotal); ctx.lineTo(-halfL, halfTotal);
+      ctx.moveTo(halfL, -halfTotal); ctx.lineTo(halfL, halfTotal);
+      ctx.moveTo(-halfTotal, -halfL); ctx.lineTo(halfTotal, -halfL);
+      ctx.moveTo(-halfTotal, halfL); ctx.lineTo(halfTotal, halfL);
+
+      const cornerOrigins = [
+        { x: -halfTotal, y: -halfTotal },
+        { x: halfL, y: -halfTotal },
+        { x: -halfTotal, y: halfL },
+        { x: halfL, y: halfL }
+      ];
+
+      const lSubStep = L / 4;
+      cornerOrigins.forEach(cor => {
+        for (let i = 1; i < 4; i++) {
+          ctx.moveTo(cor.x + i * lSubStep, cor.y);
+          ctx.lineTo(cor.x + i * lSubStep, cor.y + L);
+          ctx.moveTo(cor.x, cor.y + i * lSubStep);
+          ctx.lineTo(cor.x + L, cor.y + i * lSubStep);
+        }
+      });
+
+      const fineStep = L / 20;
+      for (let i = 1; i < 20; i++) {
+        const x = -halfL + i * fineStep;
+        ctx.moveTo(x, -halfTotal); ctx.lineTo(x, -halfL);
+        ctx.moveTo(x, halfL); ctx.lineTo(x, halfTotal);
+      }
+      for (let j = 1; j < 20; j++) {
+        const y = -halfL + j * fineStep;
+        ctx.moveTo(-halfTotal, y); ctx.lineTo(-halfL, y);
+        ctx.moveTo(halfL, y); ctx.lineTo(halfTotal, y);
+      }
+
+      for (let i = 1; i < 20; i++) {
+        const p = -halfL + i * fineStep;
+        ctx.moveTo(p, -halfL); ctx.lineTo(p, halfL);
+        ctx.moveTo(-halfL, p); ctx.lineTo(halfL, p);
+      }
+      ctx.stroke();
+
+      const groupStep = L / 5;
+      const tripleOffset = Math.max(0.7, 1.5 * (scale * 0.45));
+      ctx.beginPath();
+      for (let k = 0; k <= 5; k++) {
+        const base = -halfL + k * groupStep;
+        [-tripleOffset, tripleOffset].forEach(off => {
+          const val = base + off;
+          if (val > -halfL && val < halfL) {
+            ctx.moveTo(val, -halfL); ctx.lineTo(val, halfL);
+            ctx.moveTo(-halfL, val); ctx.lineTo(halfL, val);
+          }
+        });
+      }
+      ctx.stroke();
+
+      if (showLabels && mag <= 40) {
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "rgba(35, 45, 30, 0.75)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.font = `bold ${Math.max(10, 22 * scale)}px "JetBrains Mono", monospace`;
+        const lTextOffset = L + L / 2;
+        ctx.fillText("L1", -lTextOffset, -lTextOffset);
+        ctx.fillText("L2", lTextOffset, -lTextOffset);
+        ctx.fillText("L3", -lTextOffset, lTextOffset);
+        ctx.fillText("L4", lTextOffset, lTextOffset);
+
+        ctx.font = `bold ${Math.max(7, 10.5 * scale)}px "JetBrains Mono", monospace`;
+        const hOffset = groupStep * 1.5;
+        ctx.fillText("H1", -hOffset, -hOffset);
+        ctx.fillText("H2", hOffset, -hOffset);
+        ctx.fillText("H3", -hOffset, hOffset);
+        ctx.fillText("H4", hOffset, hOffset);
+        ctx.fillText("H5", 0, 0);
+      }
+      ctx.restore();
+    }
+
+    function drawDebris(scale) {
+      debris.forEach(d => {
+        ctx.fillStyle = `rgba(60, 75, 50, ${d.alpha * 0.45})`;
+        ctx.beginPath();
+        ctx.arc(d.x * scale, d.y * scale, d.r * Math.max(0.6, scale * 0.4), 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function drawLeucocyte(w, scale) {
+      const depth = Math.abs(focusZ - w.z);
+      if (depth > 2.8) return;
+
+      const px = w.x * scale;
+      const py = w.y * scale;
+      const pr = w.r * (scale * 0.55);
+      const opacity = Math.max(0.2, 1 - depth * 0.32);
+
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(w.angle);
+
+      const cellGrad = ctx.createRadialGradient(0, 0, pr * 0.2, 0, 0, pr);
+      cellGrad.addColorStop(0, `rgba(225, 238, 218, ${opacity * 0.85})`);
+      cellGrad.addColorStop(0.7, `rgba(185, 205, 175, ${opacity * 0.75})`);
+      cellGrad.addColorStop(0.92, `rgba(135, 155, 125, ${opacity * 0.9})`);
+      cellGrad.addColorStop(1, `rgba(45, 55, 40, ${opacity * 0.95})`);
+
+      ctx.fillStyle = cellGrad;
+      ctx.beginPath();
+      ctx.arc(0, 0, pr, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = `rgba(35, 48, 30, ${opacity * 0.85})`;
+      ctx.lineWidth = Math.max(0.7, 0.4 * scale);
+      ctx.stroke();
+
+      if (mag >= 10 && depth < 1.4) {
+        w.lobes.forEach(lobe => {
+          const lx = lobe.x * (scale * 0.5);
+          const ly = lobe.y * (scale * 0.5);
+          const lr = lobe.r * (scale * 0.5);
+
+          ctx.beginPath();
+          ctx.arc(lx, ly, lr, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(205, 222, 195, ${opacity * 0.85})`;
+          ctx.fill();
+
+          ctx.strokeStyle = `rgba(35, 45, 30, ${opacity * 0.95})`;
+          ctx.lineWidth = Math.max(0.8, 0.5 * scale);
+          ctx.stroke();
+        });
+      }
+      ctx.restore();
+    }
+
+    function renderMinimap() {
+      miniCtx.clearRect(0, 0, 80, 80);
+      miniCtx.fillStyle = '#1e293b';
+      miniCtx.fillRect(10, 10, 60, 60);
+
+      miniCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+      miniCtx.lineWidth = 1;
+      miniCtx.strokeRect(10, 10, 60, 60);
+      miniCtx.strokeRect(30, 30, 20, 20);
+
+      const currentScale = MAG_DATA[mag].scale;
+      const mapCenterX = 40 - (posX / currentScale) * (60 / 480);
+      const mapCenterY = 40 - (posY / currentScale) * (60 / 480);
+      const viewRadius = Math.max(3, (315 / currentScale) * (60 / 480));
+
+      miniCtx.strokeStyle = '#38bdf8';
+      miniCtx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+      miniCtx.beginPath();
+      miniCtx.arc(mapCenterX, mapCenterY, Math.min(28, viewRadius), 0, Math.PI * 2);
+      miniCtx.fill();
+      miniCtx.stroke();
+    }
+
+    function render() {
+      const scale = MAG_DATA[mag].scale;
+      const lum = lampPower / 100;
+
+      ctx.fillStyle = `rgb(${190 * lum}, ${212 * lum}, ${175 * lum})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.translate(canvas.width / 2 + posX, canvas.height / 2 + posY);
+
+      drawNeubauerChamber(scale);
+
+      if (showCells) {
+        drawDebris(scale);
+        leucocytes.sort((a, b) => a.z - b.z);
+        leucocytes.forEach(w => drawLeucocyte(w, scale));
+      }
+
+      ctx.restore();
+
+      const blurFactor = mag === 100 ? 0.65 : 0.3;
+      const blurVal = Math.abs(focusZ) * blurFactor;
+      canvas.style.filter = `blur(${blurVal}px)`;
+
+      renderMinimap();
+    }
+
+    // COPIAR DIRECCIÓN BITCOIN
+    function copyBtcAddress() {
+      const addr = "bc1p749779epspzf5mfgdgg0r2lunawqrse6d0ps74nywylqfuqdsdnqe768rt";
+      navigator.clipboard.writeText(addr).then(() => {
+        playBeep(750, 0.05);
+        const label = document.getElementById('copyBtnText');
+        label.innerText = '¡Copiado!';
+        setTimeout(() => {
+          label.innerText = 'Copiar Dirección';
+        }, 2200);
+      });
+    }
+
+    // GESTIÓN DEL MODO DE CONTEO
+    function setCountMode(mode) {
+      countMode = mode;
+      playBeep(520, 0.04);
+      
+      document.getElementById('mode4Q').classList.toggle('active', mode === 4);
+      document.getElementById('mode2Q').classList.toggle('active', mode === 2);
+    }
+
+    function addCount(val) {
+      count = Math.max(0, count + val);
+      playBeep(880, 0.03);
+      document.getElementById('cellCounter').innerText = count;
+    }
+
+    function resetCount() {
+      count = 0;
+      playBeep(350, 0.05);
+      document.getElementById('cellCounter').innerText = count;
+    }
+
+    function toggleCellsVisibility() {
+      showCells = document.getElementById('toggleCells').checked;
+      playBeep(showCells ? 650 : 380, 0.04);
+      document.getElementById('lbl-cells-status').innerText = showCells 
+        ? "Visibles en campo (Tecla C)" 
+        : "Células ocultas (Malla limpia)";
+      render();
+    }
+
+    function setMagnification(val) {
+      mag = val;
+      playBeep(450, 0.05);
+
+      ['4', '10', '40', '100'].forEach(m => {
+        document.getElementById(`btn${m}x`).classList.toggle('active', mag === parseInt(m));
+      });
+
+      document.getElementById('telem-mag').innerText = `${mag}x`;
+      document.getElementById('telem-total').innerText = MAG_DATA[mag].total;
+      document.getElementById('telem-na').innerText = MAG_DATA[mag].na;
+
+      render();
+    }
+
+    function updateControls() {
+      focusZ = parseFloat(document.getElementById('focus').value);
+      lampPower = parseFloat(document.getElementById('light').value);
+      document.getElementById('lbl-focus').innerText = `${focusZ > 0 ? '+' : ''}${focusZ.toFixed(2)} µm`;
+      document.getElementById('lbl-light').innerText = `${lampPower}%`;
+      render();
+    }
+
+    function toggleLabels() {
+      showLabels = !showLabels;
+      playBeep(700, 0.03);
+      const btn = document.getElementById('btnLabels');
+      btn.classList.toggle('active', showLabels);
+      document.getElementById('lbl-btn-text').innerText = `Rótulos: ${showLabels ? 'SÍ' : 'NO'}`;
+      render();
+    }
+
+    function centerStage() {
+      playBeep(550, 0.04);
+      posX = 0;
+      posY = 0;
+      render();
+    }
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    const housing = document.getElementById('eyepiece-housing');
+
+    housing.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX - posX;
+      startY = e.clientY - posY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      posX = e.clientX - startX;
+      posY = e.clientY - startY;
+      render();
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    housing.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const slider = document.getElementById('focus');
+      const step = mag === 100 ? 0.05 : 0.1;
+      let val = parseFloat(slider.value) + (e.deltaY > 0 ? -step : step);
+      val = Math.max(-5, Math.min(5, val));
+      slider.value = val;
+      updateControls();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        addCount(1);
+      } else if (e.code === 'KeyC') {
+        const toggle = document.getElementById('toggleCells');
+        toggle.checked = !toggle.checked;
+        toggleCellsVisibility();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
